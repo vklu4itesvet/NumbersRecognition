@@ -9,7 +9,7 @@ namespace NumbersRecognizer.Core
   {
     #region Fileds
 
-    private readonly IList<DnaMatch> _matches = new List<DnaMatch>();
+    private readonly IList<GenMatch> _matches = new List<GenMatch>();
 
     private IList<Gene> _dna;
 
@@ -78,14 +78,13 @@ namespace NumbersRecognizer.Core
 
     private bool Tokenize(string line)
     {
-      var dna = CurrentMatcher;
-      var matches = dna.Gene.Matcher.Matches(line);
+      var matches = CurrentMatcher.Gene.Matcher.Matches(line);
 
       if (!matches.Any())
         return false;
       
       foreach (Match m in matches)
-        _matches.Add(new DnaMatch { Position = m.Index, DnaRate = dna.GeneIndex });
+        _matches.Add(new GenMatch { Position = m.Index, DnaRate = CurrentMatcher.GeneIndex });
 
       return true;
     }
@@ -99,14 +98,15 @@ namespace NumbersRecognizer.Core
       }
 
       var currentGen = CurrentMatcher.GeneIndex;
-      var maxGen = _dna.Sum(g => g.Repeats);
-      var matchesForAllGenes = _matches.GroupBy(m => m.Position).Where(g => g.Any(m => m.DnaRate == currentGen) && g.Count() == maxGen);
+      var genesTotalCount = _dna.Sum(g => g.Repeats); // counting number of genes with respect to count of their repeats
+      var matchesForAllGenes = _matches.GroupBy(m => m.Position) // looking for those line indexes, which were matched by all genes of this digit
+        .Where(g => g.Any(m => m.DnaRate == currentGen) && g.Count() == genesTotalCount);
 
-      if (_handledLinesCount == maxGen)
-        _recognized = matchesForAllGenes.Any();
+      if (_handledLinesCount == genesTotalCount)
+        _recognized = matchesForAllGenes.Any();// If we are here - each gene from DNA was matched and time to make decision
 
-      if (_recognized == true)
-        RecognizedInIndexes = from m in matchesForAllGenes select m.Key;
+      if (_recognized == true) //If we are here - decision was made, time to determine line indexes where this digit was found
+        RecognizedInIndexes = from m in matchesForAllGenes select m.Key; 
     }
 
     private IEnumerable<GenMatcher> GetGenMatchers()
@@ -147,7 +147,7 @@ namespace NumbersRecognizer.Core
       public int GeneIndex { get; set; }
     }
 
-    private struct DnaMatch
+    private struct GenMatch
     {
       public int Position { get; set; }
 
