@@ -61,10 +61,7 @@ namespace NumbersRecognizer.Core
       }
 
       if (CurrentMatcher.Gene.Repeats == 1)
-      {
-        var gen = CurrentMatcher.GeneIndex + 1;
-        var notFinished = MoveNextMatcher();//If current gene should not repeat, take next for matching next line
-      }
+        MoveNextMatcher();//If current gene should not repeat, take next for matching next line
     }
 
     public void Reset()
@@ -94,7 +91,7 @@ namespace NumbersRecognizer.Core
 
       if (!matches.Any())
         return false;
-
+      
       foreach (Match m in matches)
         _matches.Add(new DnaMatch { Position = m.Index, DnaRate = dna.GeneIndex });
 
@@ -111,14 +108,7 @@ namespace NumbersRecognizer.Core
 
       var currentGen = CurrentMatcher.GeneIndex;
       var maxGen = _dna.Sum(g => g.Repeats);
-
-      var matchesForAllGenes = _matches.GroupBy(m => m.Position).Where(g =>
-      {
-        var tt = g.Key;
-        var ttt = g.Count();
-
-        return g.Any(m => m.DnaRate == currentGen) && g.Count() == maxGen;
-      }).ToList();
+      var matchesForAllGenes = _matches.GroupBy(m => m.Position).Where(g => g.Any(m => m.DnaRate == currentGen) && g.Count() == maxGen);
 
       if (_handledLinesCount == maxGen)
         Recognized = matchesForAllGenes.Any();
