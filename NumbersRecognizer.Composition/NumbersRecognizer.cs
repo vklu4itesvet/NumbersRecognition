@@ -27,7 +27,10 @@ namespace NumbersRecognizer
         {
           var number = GetNumber();
           _numbers.ForEach(n => n.Reset());
-          yield return new string(number);
+          //If we are here - all number recognizers made decision if they found smth, 
+          //but also need to check if real number was found.
+          if(number.Any())
+            yield return new string(number);
         }
       }
     }
