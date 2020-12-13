@@ -37,8 +37,9 @@ namespace NumbersRecognizer
 
     private char[] GetNumber()
     {
-      //var t = _numbers.SelectMany(n => from i in n.RecognizedCharIndexes select new { Character = n.Character, Position = i });
-      return (from n in _numbers where n.Recognized == true select n.Character).ToArray();
+      var numbersWithPositions = _numbers.SelectMany(n => from i in n.RecognizedCharIndexes select new { Character = n.Character, Position = i });
+      var numbersOrdered = from n in numbersWithPositions orderby n.Position select n.Character;
+      return numbersOrdered.ToArray();
     }
   }
 }

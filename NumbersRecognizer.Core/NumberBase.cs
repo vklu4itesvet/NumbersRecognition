@@ -24,19 +24,14 @@ namespace NumbersRecognizer.Core
       _dna = GetGenes();
       _genumerator = GetNextDnaPart().GetEnumerator();
       MoveNextMatcher();
+      RecognizedCharIndexes = Enumerable.Empty<int>();
     }
 
     #region Properties
 
     public abstract char Character { get; }
 
-    public IEnumerable<int> RecognizedCharIndexes
-    {
-      get
-      {
-        return from m in _matches select m.Position;
-      }
-    }
+    public IEnumerable<int> RecognizedCharIndexes { get; private set; }
 
     public bool? Recognized { get; protected set; }
 
@@ -77,6 +72,7 @@ namespace NumbersRecognizer.Core
       Recognized = null;
       _matches.Clear();
       _handledLinesCount = 0;
+      RecognizedCharIndexes = Enumerable.Empty<int>(); ;
       _genumerator = GetNextDnaPart().GetEnumerator();
       MoveNextMatcher();
     }
@@ -116,16 +112,19 @@ namespace NumbersRecognizer.Core
       var currentGen = CurrentMatcher.GeneIndex;
       var maxGen = _dna.Sum(g => g.Repeats);
 
-      var hasMatchesForAllGenes = _matches.GroupBy(m => m.Position).Where(g =>
+      var matchesForAllGenes = _matches.GroupBy(m => m.Position).Where(g =>
       {
         var tt = g.Key;
         var ttt = g.Count();
 
         return g.Any(m => m.DnaRate == currentGen) && g.Count() == maxGen;
-      }).Any();
+      }).ToList();
 
       if (_handledLinesCount == maxGen)
-        Recognized = hasMatchesForAllGenes;
+        Recognized = matchesForAllGenes.Any();
+
+      if (Recognized == true)
+        RecognizedCharIndexes = from m in matchesForAllGenes select m.Key;
     }
 
     #endregion
