@@ -35,7 +35,7 @@ namespace NumbersRecognizer
     private char[] GetNumber()
     {
       //var t = _numbers.SelectMany(n => from i in n.RecognizedCharIndexes select new { Character = n.Character, Position = i });
-      return (from n in _numbers select n.Character).ToArray();
+      return (from n in _numbers where n.Recognized == true select n.Character).ToArray();
     }
   }
 }

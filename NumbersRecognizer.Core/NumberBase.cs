@@ -65,7 +65,7 @@ namespace NumbersRecognizer.Core
       if (CurrentMatcher.Gene.Repeats == 1)
       {
         var gen = CurrentMatcher.GeneIndex + 1;
-        var notFinished = MoveNextMatcher();
+        var notFinished = MoveNextMatcher();//If current gene should not repeat, take next for matching next line
       }
     }
 
@@ -104,7 +104,10 @@ namespace NumbersRecognizer.Core
     private void Analyze()
     {
       if (!_matches.Any())
+      {
         Recognized = false;
+        return;
+      }
 
       var currentGen = CurrentMatcher.GeneIndex;
       var maxGen = _dna.Count - 1;
