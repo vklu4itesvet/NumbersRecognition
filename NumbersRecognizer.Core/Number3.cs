@@ -9,8 +9,8 @@ namespace NumbersRecognizer.Core
     protected override IList<Gene> GetGenes() => new List<Gene>
     {
       new Gene(@"-{3}"),
-      new Gene(@"\s//\s"),
-      new Gene(@"\s\\\s"),
+      new Gene(@"\s[//]\s"),
+      new Gene(@"\s[\\]\s"),
       new Gene(@"-{2}\s"),
     };
   }
