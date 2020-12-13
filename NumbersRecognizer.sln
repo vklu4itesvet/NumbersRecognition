@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumbersRecognizer.ConsoleHo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumbersRecognizer.IO", "NumbersRecognizer.IO\NumbersRecognizer.IO.csproj", "{4C03DA66-DCFC-429A-A14B-F48C7C6229FC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumbersRecognizer.Core", "NumbersRecognizer.Core\NumbersRecognizer.Core.csproj", "{B6710896-7D9A-4CF3-AD90-4DFB151EE46E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumbersRecognizer.Digits", "NumbersRecognizer.Core\NumbersRecognizer.Digits.csproj", "{B6710896-7D9A-4CF3-AD90-4DFB151EE46E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumbersRecognizer.Composition", "NumbersRecognizer.Composition\NumbersRecognizer.Composition.csproj", "{4B7A3001-C875-400E-85A1-CFECF492D821}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumbersRecognizer.Numbers", "NumbersRecognizer.Composition\NumbersRecognizer.Numbers.csproj", "{4B7A3001-C875-400E-85A1-CFECF492D821}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumbersRecognizer.Interface", "NumbersRecognizer.Interface\NumbersRecognizer.Interface.csproj", "{A1499858-F477-45C0-AA71-E33B7EFCDA47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumbersRecognizer.Interface", "NumbersRecognizer.Interface\NumbersRecognizer.Interface.csproj", "{A1499858-F477-45C0-AA71-E33B7EFCDA47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

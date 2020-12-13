@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NumbersRecognizer.Composition\NumbersRecognizer.Composition.csproj" />
-    <ProjectReference Include="..\NumbersRecognizer.Core\NumbersRecognizer.Core.csproj" />
+    <ProjectReference Include="..\NumbersRecognizer.Composition\NumbersRecognizer.Numbers.csproj" />
+    <ProjectReference Include="..\NumbersRecognizer.Core\NumbersRecognizer.Digits.csproj" />
     <ProjectReference Include="..\NumbersRecognizer.IO\NumbersRecognizer.IO.csproj" />
   </ItemGroup>
 

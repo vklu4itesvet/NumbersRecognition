@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NumbersRecognizer.Core\NumbersRecognizer.Core.csproj" />
+    <ProjectReference Include="..\NumbersRecognizer.Core\NumbersRecognizer.Digits.csproj" />
     <ProjectReference Include="..\NumbersRecognizer.IO\NumbersRecognizer.IO.csproj" />
   </ItemGroup>
 
