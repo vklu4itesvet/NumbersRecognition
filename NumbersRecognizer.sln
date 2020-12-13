@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumbersRecognizer.ConsoleHost", "NumbersRecognizer\NumbersRecognizer.ConsoleHost.csproj", "{F84BB677-1910-4DCC-85FC-76C191105BA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumbersRecognizer.Console", "NumbersRecognizer\NumbersRecognizer.Console.csproj", "{F84BB677-1910-4DCC-85FC-76C191105BA0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumbersRecognizer.IO", "NumbersRecognizer.IO\NumbersRecognizer.IO.csproj", "{4C03DA66-DCFC-429A-A14B-F48C7C6229FC}"
 EndProject
