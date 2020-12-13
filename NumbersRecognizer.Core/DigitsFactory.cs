@@ -6,9 +6,9 @@ using System.Reflection;
 
 namespace NumbersRecognizer.Core
 {
-  public class NumbersFactory : INumbersFactory
+  public class DigitsFactory : IDigitsFactory
   {
-    public IEnumerable<INumber> CreateNumbers()
+    public IEnumerable<IDigit> CreateDigits()
     {
       return Assembly.GetAssembly(typeof(DigitBase))
         .GetTypes()

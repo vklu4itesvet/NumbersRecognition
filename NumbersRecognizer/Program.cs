@@ -21,7 +21,7 @@ namespace NumbersRecognizer.Host
 
         numbersDataSource.Reset();
 
-        var numbersRecognizer = new NumbersRecognizer(numbersDataSource, new NumbersFactory());
+        var numbersRecognizer = new NumbersRecognizer(numbersDataSource, new DigitsFactory());
         foreach (var n in numbersRecognizer.Recognize())
           Console.WriteLine(n);
       }

@@ -2,13 +2,13 @@
 
 namespace NumbersRecognizer.Interface
 {
-  public interface INumber
+  public interface IDigit
   {
     char Character { get; }
 
-    bool? Recognized { get; }
+    IEnumerable<int> RecognizedInIndexes { get; }
 
-    IEnumerable<int> FoundInIndexes { get; }
+    bool? Recognized { get; }
 
     void Recognize(string line);
 

@@ -2,7 +2,7 @@
 
 namespace NumbersRecognizer.Core
 {
-  internal class Number1 : DigitBase
+  internal class Digit1 : DigitBase
   {
     public override char Character => '1';
 

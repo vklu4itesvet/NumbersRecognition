@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace NumbersRecognizer.Core
 {
-  public abstract class DigitBase : INumber
+  public abstract class DigitBase : IDigit
   {
     #region Fileds
 
@@ -24,14 +24,14 @@ namespace NumbersRecognizer.Core
       _dna = GetGenes();
       _genumerator = GetGenMatchers().GetEnumerator();
       MoveNextMatcher();
-      FoundInIndexes = Enumerable.Empty<int>();
+      RecognizedInIndexes = Enumerable.Empty<int>();
     }
 
     #region Properties
 
     public abstract char Character { get; }
 
-    public IEnumerable<int> FoundInIndexes { get; private set; }
+    public IEnumerable<int> RecognizedInIndexes { get; private set; }
 
     public bool? Recognized { get; protected set; }
 
@@ -69,7 +69,7 @@ namespace NumbersRecognizer.Core
       Recognized = null;
       _matches.Clear();
       _handledLinesCount = 0;
-      FoundInIndexes = Enumerable.Empty<int>(); ;
+      RecognizedInIndexes = Enumerable.Empty<int>(); ;
       _genumerator = GetGenMatchers().GetEnumerator();
       MoveNextMatcher();
     }
@@ -114,7 +114,7 @@ namespace NumbersRecognizer.Core
         Recognized = matchesForAllGenes.Any();
 
       if (Recognized == true)
-        FoundInIndexes = from m in matchesForAllGenes select m.Key;
+        RecognizedInIndexes = from m in matchesForAllGenes select m.Key;
     }
 
     #endregion

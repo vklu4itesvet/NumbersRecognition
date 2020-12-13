@@ -2,8 +2,8 @@
 
 namespace NumbersRecognizer.Interface
 {
-  public interface INumbersFactory
+  public interface IDigitsFactory
   {
-    IEnumerable<INumber> CreateNumbers(); 
+    IEnumerable<IDigit> CreateDigits(); 
   }
 }
