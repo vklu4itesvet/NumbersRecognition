@@ -8,15 +8,16 @@ namespace NumbersRecognizer.Host
   {
     static void Main(string[] args)
     {
+      var lineBreak = Environment.NewLine;
       using (var numbersDataSource = new NumbersDataFileSource())
       {
-        Console.WriteLine($"Start parsing of {numbersDataSource.GetDataSourcePath} ...");
-        Console.WriteLine($"file content:{Environment.NewLine}");
+        Console.WriteLine($"Start parsing of {numbersDataSource.GetDataSourcePath} ...{lineBreak}");
+        Console.WriteLine($"file content:{lineBreak}");
 
         while (numbersDataSource.TryReadLine(out var line))
           Console.WriteLine(line);
 
-        Console.WriteLine($"{Environment.NewLine}found numbers:{Environment.NewLine}");
+        Console.WriteLine($"{lineBreak}found numbers:{lineBreak}");
 
         numbersDataSource.Reset();
 
@@ -25,7 +26,7 @@ namespace NumbersRecognizer.Host
           Console.WriteLine(n);
       }
 
-      Console.WriteLine($"{Environment.NewLine}Press any key for exit");
+      Console.WriteLine($"{lineBreak}Press any key for exit");
       Console.ReadKey();
     }
   }
