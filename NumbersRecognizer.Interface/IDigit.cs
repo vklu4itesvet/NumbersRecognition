@@ -8,7 +8,7 @@ namespace NumbersRecognizer.Interface
 
     IEnumerable<int> RecognizedInIndexes { get; }
 
-    bool? Recognized { get; }
+    bool DidRecognition { get; }
 
     void Recognize(string line);
 

@@ -15,6 +15,8 @@ namespace NumbersRecognizer.Core
 
     private IEnumerator<GenMatcher> _genumerator;
 
+    private bool? _recognized;
+
     private int _handledLinesCount = 0;
 
     #endregion
@@ -22,8 +24,7 @@ namespace NumbersRecognizer.Core
     protected DigitBase()
     {
       _dna = GetGenes();
-      _genumerator = GetGenMatchers().GetEnumerator();
-      MoveNextMatcher();
+      InitMatcher();
       RecognizedInIndexes = Enumerable.Empty<int>();
     }
 
@@ -33,7 +34,7 @@ namespace NumbersRecognizer.Core
 
     public IEnumerable<int> RecognizedInIndexes { get; private set; }
 
-    public bool? Recognized { get; protected set; }
+    public bool DidRecognition => _recognized.HasValue;
 
     private GenMatcher CurrentMatcher => _genumerator.Current;
 
@@ -43,14 +44,14 @@ namespace NumbersRecognizer.Core
 
     public void Recognize(string line)
     {
-      if (Recognized.HasValue)
+      if (DidRecognition)
         return;
 
       _handledLinesCount++;
       var foundGenes = Tokenize(line);
       Analyze();
 
-      if (Recognized.HasValue)
+      if (DidRecognition)
         return;
 
       if (!foundGenes)// If no matches with current gene - lets try found matches with next gene
@@ -66,23 +67,14 @@ namespace NumbersRecognizer.Core
 
     public void Reset()
     {
-      Recognized = null;
+      _recognized = null;
       _matches.Clear();
       _handledLinesCount = 0;
-      RecognizedInIndexes = Enumerable.Empty<int>(); ;
-      _genumerator = GetGenMatchers().GetEnumerator();
-      MoveNextMatcher();
+      RecognizedInIndexes = Enumerable.Empty<int>();
+      InitMatcher();
     }
 
     protected abstract IList<Gene> GetGenes();
-
-    private IEnumerable<GenMatcher> GetGenMatchers()
-    {
-      for (var i = 0; i < _dna.Count; i++)
-        yield return new GenMatcher { Gene = _dna[i], GeneIndex = i };
-    }
-
-    private bool MoveNextMatcher() => _genumerator.MoveNext();
 
     private bool Tokenize(string line)
     {
@@ -102,7 +94,7 @@ namespace NumbersRecognizer.Core
     {
       if (!_matches.Any())
       {
-        Recognized = false;
+        _recognized = false;
         return;
       }
 
@@ -111,10 +103,24 @@ namespace NumbersRecognizer.Core
       var matchesForAllGenes = _matches.GroupBy(m => m.Position).Where(g => g.Any(m => m.DnaRate == currentGen) && g.Count() == maxGen);
 
       if (_handledLinesCount == maxGen)
-        Recognized = matchesForAllGenes.Any();
+        _recognized = matchesForAllGenes.Any();
 
-      if (Recognized == true)
+      if (_recognized == true)
         RecognizedInIndexes = from m in matchesForAllGenes select m.Key;
+    }
+
+    private IEnumerable<GenMatcher> GetGenMatchers()
+    {
+      for (var i = 0; i < _dna.Count; i++)
+        yield return new GenMatcher { Gene = _dna[i], GeneIndex = i };
+    }
+
+    private bool MoveNextMatcher() => _genumerator.MoveNext();
+
+    private void InitMatcher()
+    {
+      _genumerator = GetGenMatchers().GetEnumerator();
+      MoveNextMatcher();
     }
 
     #endregion

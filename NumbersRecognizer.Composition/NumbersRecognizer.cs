@@ -23,7 +23,7 @@ namespace NumbersRecognizer
       {
         _digits.ForEach(n => n.Recognize(l));
 
-        if (_digits.TrueForAll(n => n.Recognized.HasValue))
+        if (_digits.TrueForAll(n => n.DidRecognition))
         {
           var number = GetNumber();
           _digits.ForEach(n => n.Reset());
