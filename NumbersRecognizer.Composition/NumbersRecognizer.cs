@@ -17,7 +17,7 @@ namespace NumbersRecognizer
       _numbers = numbersFactory.CreateNumbers().ToList();
     }
 
-    public IEnumerable<string> Recognize()
+    public IEnumerable<int> Recognize()
     {
       while (_numbersRawDataSource.TryReadLine(out var l))
       {
@@ -27,19 +27,17 @@ namespace NumbersRecognizer
         {
           var number = GetNumber();
           _numbers.ForEach(n => n.Reset());
-          //If we are here - all number recognizers made decision if they found smth, 
-          //but also need to check if real number was found.
-          if(number.Any())
-            yield return new string(number);
+          yield return number;
         }
       }
     }
 
-    private char[] GetNumber()
+    private int GetNumber()
     {
-      var numbersWithPositions = _numbers.SelectMany(n => from i in n.RecognizedCharIndexes select new { Character = n.Character, Position = i });
+      var numbersWithPositions = _numbers.SelectMany(n => from i in n.RecognizedCharIndexes select new { n.Character, Position = i });
       var numbersOrdered = from n in numbersWithPositions orderby n.Position select n.Character;
-      return numbersOrdered.ToArray();
+      var numberChars = numbersOrdered.ToArray();
+      return int.Parse(new string(numberChars));
     }
   }
 }
