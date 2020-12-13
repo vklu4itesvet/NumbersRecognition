@@ -15,6 +15,8 @@ namespace NumbersRecognizer.Core
 
     private IEnumerator<GenMatcher> _genumerator;
 
+    private int _handledLinesCount = 0;
+
     #endregion
 
     protected NumberBase()
@@ -32,9 +34,6 @@ namespace NumbersRecognizer.Core
     {
       get
       {
-        //if (Recognized != true)
-        //  throw new InvalidOperationException("No chars recognized at the moment.");
-
         return from m in _matches select m.Position;
       }
     }
@@ -49,13 +48,17 @@ namespace NumbersRecognizer.Core
 
     public void Recognize(string line)
     {
-      if (Recognized == false)
+      if (Recognized.HasValue)
         return;
 
+      _handledLinesCount++;
       var foundGenes = Tokenize(line);
       Analyze();
 
-      if (!foundGenes && Recognized != false)
+      if (Recognized.HasValue)
+        return;
+
+      if (!foundGenes)// If no matches with current gene - lets try found matches with next gene
       {
         MoveNextMatcher();
         Tokenize(line);
@@ -73,6 +76,7 @@ namespace NumbersRecognizer.Core
     {
       Recognized = null;
       _matches.Clear();
+      _handledLinesCount = 0;
       _genumerator = GetNextDnaPart().GetEnumerator();
       MoveNextMatcher();
     }
@@ -110,17 +114,18 @@ namespace NumbersRecognizer.Core
       }
 
       var currentGen = CurrentMatcher.GeneIndex;
-      var maxGen = _dna.Count - 1;
+      var maxGen = _dna.Sum(g => g.Repeats);
 
-      //var matchesStale = (from m in _matches where m.DnaRate < currentGen select m).ToList();
-      //foreach (var m in matchesStale)
-      //  _matches.Remove(m);
+      var hasMatchesForAllGenes = _matches.GroupBy(m => m.Position).Where(g =>
+      {
+        var tt = g.Key;
+        var ttt = g.Count();
 
-      var hasMatchesInCurrentGen = _matches.GroupBy(m => m.Position).Any(g => g.Any(m => m.DnaRate == currentGen));
-      if (!hasMatchesInCurrentGen)
-        Recognized = false;
-      else if (currentGen == maxGen)
-        Recognized = hasMatchesInCurrentGen;
+        return g.Any(m => m.DnaRate == currentGen) && g.Count() == maxGen;
+      }).Any();
+
+      if (_handledLinesCount == maxGen)
+        Recognized = hasMatchesForAllGenes;
     }
 
     #endregion

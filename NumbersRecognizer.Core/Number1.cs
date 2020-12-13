@@ -8,7 +8,7 @@ namespace NumbersRecognizer.Core
 
     protected override IList<Gene> GetGenes() => new List<Gene>
     {
-      new Gene(@"[|]", repeats: 4),
+      new Gene(@"\s??[|]\s??", repeats: 4),
     };
   }
 }
