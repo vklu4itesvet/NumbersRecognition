@@ -8,7 +8,7 @@ namespace NumbersRecognizer.Interface
 
     bool? Recognized { get; }
 
-    IEnumerable<int> RecognizedCharIndexes { get; }
+    IEnumerable<int> FoundInIndexes { get; }
 
     void Recognize(string line);
 

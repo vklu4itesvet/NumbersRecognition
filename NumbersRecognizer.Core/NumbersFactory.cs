@@ -10,10 +10,10 @@ namespace NumbersRecognizer.Core
   {
     public IEnumerable<INumber> CreateNumbers()
     {
-      return Assembly.GetAssembly(typeof(NumberBase))
+      return Assembly.GetAssembly(typeof(DigitBase))
         .GetTypes()
-        .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(NumberBase)))
-        .Select(t => (NumberBase)Activator.CreateInstance(t))
+        .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(DigitBase)))
+        .Select(t => (DigitBase)Activator.CreateInstance(t))
         .ToList();
     }
   }

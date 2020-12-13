@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace NumbersRecognizer.Core
 {
-  public abstract class NumberBase : INumber
+  public abstract class DigitBase : INumber
   {
     #region Fileds
 
@@ -19,23 +19,23 @@ namespace NumbersRecognizer.Core
 
     #endregion
 
-    protected NumberBase()
+    protected DigitBase()
     {
       _dna = GetGenes();
-      _genumerator = GetNextDnaPart().GetEnumerator();
+      _genumerator = GetGenMatchers().GetEnumerator();
       MoveNextMatcher();
-      RecognizedCharIndexes = Enumerable.Empty<int>();
+      FoundInIndexes = Enumerable.Empty<int>();
     }
 
     #region Properties
 
     public abstract char Character { get; }
 
-    public IEnumerable<int> RecognizedCharIndexes { get; private set; }
+    public IEnumerable<int> FoundInIndexes { get; private set; }
 
     public bool? Recognized { get; protected set; }
 
-    protected GenMatcher CurrentMatcher => _genumerator.Current;
+    private GenMatcher CurrentMatcher => _genumerator.Current;
 
     #endregion
 
@@ -69,20 +69,20 @@ namespace NumbersRecognizer.Core
       Recognized = null;
       _matches.Clear();
       _handledLinesCount = 0;
-      RecognizedCharIndexes = Enumerable.Empty<int>(); ;
-      _genumerator = GetNextDnaPart().GetEnumerator();
+      FoundInIndexes = Enumerable.Empty<int>(); ;
+      _genumerator = GetGenMatchers().GetEnumerator();
       MoveNextMatcher();
     }
 
     protected abstract IList<Gene> GetGenes();
 
-    protected IEnumerable<GenMatcher> GetNextDnaPart()
+    private IEnumerable<GenMatcher> GetGenMatchers()
     {
       for (var i = 0; i < _dna.Count; i++)
         yield return new GenMatcher { Gene = _dna[i], GeneIndex = i };
     }
 
-    protected bool MoveNextMatcher() => _genumerator.MoveNext();
+    private bool MoveNextMatcher() => _genumerator.MoveNext();
 
     private bool Tokenize(string line)
     {
@@ -114,7 +114,7 @@ namespace NumbersRecognizer.Core
         Recognized = matchesForAllGenes.Any();
 
       if (Recognized == true)
-        RecognizedCharIndexes = from m in matchesForAllGenes select m.Key;
+        FoundInIndexes = from m in matchesForAllGenes select m.Key;
     }
 
     #endregion
@@ -134,7 +134,7 @@ namespace NumbersRecognizer.Core
       public byte Repeats { get; set; }
     }
 
-    protected struct GenMatcher
+    private struct GenMatcher
     {
       public Gene Gene { get; set; }
 

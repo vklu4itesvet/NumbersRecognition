@@ -34,8 +34,8 @@ namespace NumbersRecognizer
 
     private int GetNumber()
     {
-      var numbersWithPositions = _numbers.SelectMany(n => from i in n.RecognizedCharIndexes select new { n.Character, Position = i });
-      var numbersOrdered = from n in numbersWithPositions orderby n.Position select n.Character;
+      var numbersWithIndexes = _numbers.SelectMany(n => from i in n.FoundInIndexes select new { n.Character, Position = i });
+      var numbersOrdered = from n in numbersWithIndexes orderby n.Position select n.Character;
       var numberChars = numbersOrdered.ToArray();
       return int.Parse(new string(numberChars));
     }
